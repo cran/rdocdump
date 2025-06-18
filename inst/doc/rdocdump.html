@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Quick Start: dump R docs and vignettes to text files for LLMs</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+width: 0.8em;
+margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+}
+pre.numberSource { margin-left: 3em; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+
+
+<style type="text/css">body {background-color: #fff;margin: 1em auto;max-width: 700px;overflow: visible;padding-left: 2em;padding-right: 2em;font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;font-size: 14px;line-height: 1.35;}table {margin: 1em auto;border-width: 1px;border-color: #DDDDDD;border-style: outset;border-collapse: collapse;}table th {border-width: 2px;padding: 5px;border-style: inset;}table td {border-width: 1px;border-style: inset;line-height: 18px;padding: 5px 5px;}table, table th, table td {border-left-style: none;border-right-style: none;}table thead, table tr.even {background-color: #f7f7f7;}p {margin: 0.5em 0;}blockquote {background-color: #f6f6f6;padding: 0.25em 0.75em;}hr {border-style: solid;border: none;border-top: 1px solid #777;margin: 28px 0;}dl {margin-left: 0;}dl dd {margin-bottom: 13px;margin-left: 13px;}dl dt {font-weight: bold;}ul {margin-top: 0;}ul li {list-style: circle outside;}ul ul {margin-bottom: 0;}pre, code {background-color: #f7f7f7;border-radius: 3px;color: #333;white-space: pre-wrap; }pre {border-radius: 3px;margin: 5px 0px 10px 0px;padding: 10px;}pre:not([class]) {background-color: #f7f7f7;}code {font-family: Consolas, Monaco, 'Courier New', monospace;font-size: 85%;}p > code, li > code {padding: 2px 0px;}div.figure {text-align: center;}img {background-color: #FFFFFF;padding: 2px;border: 1px solid #DDDDDD;border-radius: 3px;border: 1px solid #CCCCCC;margin: 0 5px;}h1 {margin-top: 0;font-size: 35px;line-height: 40px;}h2 {border-bottom: 4px solid #f7f7f7;padding-top: 10px;padding-bottom: 2px;font-size: 145%;}h3 {border-bottom: 2px solid #f7f7f7;padding-top: 10px;font-size: 120%;}h4 {border-bottom: 1px solid #f7f7f7;margin-left: 8px;font-size: 105%;}h5, h6 {border-bottom: 1px solid #ccc;font-size: 105%;}a {color: #0033dd;text-decoration: none;}a:hover {color: #6666ff; }a:visited {color: #800080; }a:visited:hover {color: #BB00BB; }a[href^="http:"] {text-decoration: underline; }a[href^="https:"] {text-decoration: underline; }</style>
+</head>
+
+<body>
+
+
+<header id="title-block-header">
+<h1 class="title">Quick Start: dump R docs and vignettes to text files for LLMs</h1>
+
+</header>
+
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction">Introduction</a></li>
+  <li><a href="#installation" id="toc-installation">Installation</a></li>
+  <li><a href="#setting-the-cache-path" id="toc-setting-the-cache-path">Setting the Cache Path</a></li>
+  <li><a href="#extracting-documentation" id="toc-extracting-documentation">Extracting Documentation</a></li>
+  <li><a href="#choosing-what-to-dump-to-text" id="toc-choosing-what-to-dump-to-text">Choosing what to dump to text</a></li>
+  <li><a href="#handling-temporary-files" id="toc-handling-temporary-files">Handling Temporary Files</a></li>
+  </ul>
+</nav>
+<h1 id="introduction">Introduction</h1>
+<p><code>{rdocdump}</code> is an R package designed to combine an R package’s documentation and vignettes into a single plain text file. This is particularly useful when you want to ingest complete package documentation into large language models (LLMs) or for archival purposes. <code>{rdocdump}</code> works with installed packages, source directories, tar.gz archives, or package sources available on CRAN.</p>
+<h1 id="installation">Installation</h1>
+<p>Install the latest stable release of <code>rdocdump</code> from CRAN with:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;rdocdump&quot;</span>)</span></code></pre></div>
+<p>You can install the development version of <code>rdocdump</code> from R Universe with:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&#39;rdocdump&#39;</span>,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a> <span class="at">repos =</span> <span class="fu">c</span>(<span class="st">&#39;https://e-kotov.r-universe.dev&#39;</span>, <span class="st">&#39;https://cloud.r-project.org&#39;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>or from GitHub with:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;pak&quot;)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">&quot;e-kotov/rdocdump&quot;</span>)</span></code></pre></div>
+<h1 id="setting-the-cache-path">Setting the Cache Path</h1>
+<p>By default, <code>{rdocdump}</code> stores temporary files in a directory within R’s temporary directory. You can override this by setting a custom cache path using the helper function <code>rdd_set_cache_path()</code>. For example:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set a custom cache directory</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>cache_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;my_rdocdump_cache&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rdd_set_cache_path</span>(cache_dir)</span></code></pre></div>
+<pre><code>rdocdump.cache_path set to: /private/var/folders/gb/t5zr5rn15sldqybrmqbyh6y80000gn/T/Rtmpp5wRxV/my_rdocdump_cache</code></pre>
+<p>This ensures that temporary tar.gz archives and extracted files are stored in your specified directory.</p>
+<h1 id="extracting-documentation">Extracting Documentation</h1>
+<p>The main function in rdocdump is <code>rdd_to_txt()</code>, which accepts several types of inputs for the <code>pkg</code> argument:</p>
+<ul>
+<li><p>An installed package name (e.g., <code>&quot;stats&quot;</code>).</p></li>
+<li><p>A full path to a package source directory.</p></li>
+<li><p>A full path to a package archive (tar.gz).</p></li>
+<li><p>A package name available on CRAN (downloaded automatically if not installed).</p></li>
+</ul>
+<p>Here is an example that downloads the source for the package <code>{rJavaEnv}</code> from CRAN, extracts its documentation, and saves it to a file:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract documentation for &#39;rJavaEnv&#39; and save to a text file.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rdd_to_txt</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">pkg =</span> <span class="st">&quot;rJavaEnv&quot;</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="fu">tempfile</span>(<span class="st">&quot;rJavaEnv_docs_&quot;</span>, <span class="at">fileext =</span> <span class="st">&quot;.txt&quot;</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">force_fetch =</span> <span class="cn">TRUE</span>,    <span class="co"># Force download even if the package is installed.</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">keep_files =</span> <span class="st">&quot;none&quot;</span>      <span class="co"># Delete temporary files after extraction.</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>Fetching package source from CRAN...
+trying URL &#39;https://cloud.r-project.org/src/contrib/rJavaEnv_0.3.0.tar.gz&#39;
+Content type &#39;application/x-gzip&#39; length 104016 bytes (101 KB)
+==================================================
+downloaded 101 KB
+
+[1] &quot;/private/var/folders/gb/t5zr5rn15sldqybrmqbyh6y80000gn/T/Rtmpp5wRxV/rJavaEnv_docs_c0736421bbc2.txt&quot;</code></pre>
+<p>If you prefer to simply get the combined documentation as a character string, call the function without the <code>file</code> argument:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract and capture the combined documentation in a variable.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>docs <span class="ot">&lt;-</span> <span class="fu">rdd_to_txt</span>(<span class="at">pkg =</span> <span class="st">&quot;splines&quot;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">substr</span>(docs, <span class="dv">1</span>, <span class="dv">1000</span>))  <span class="co"># Print the first 1000 characters for a preview.</span></span></code></pre></div>
+<pre><code>DESCRIPTION:
+Package: splines
+Version: 4.5.1
+Priority: base
+Imports: graphics, stats
+Title: Regression Spline Functions and Classes
+Author: Douglas M. Bates &lt;bates@stat.wisc.edu&gt; and
+ William N. Venables &lt;Bill.Venables@csiro.au&gt;
+Maintainer: R Core Team &lt;do-use-Contact-address@r-project.org&gt;
+Contact: R-help mailing list &lt;r-help@r-project.org&gt;
+Description: Regression spline functions and classes.
+License: Part of R 4.5.1
+Suggests: Matrix, methods
+NeedsCompilation: yes
+Built: R 4.5.1; aarch64-apple-darwin20; 2025-06-14 01:29:30 UTC; unix
+
+--------------------------------------------------------------------------------
+Function: asVector()
+Coerce an Object to a Vector
+
+Description:
+
+     This is a generic function.  Methods for this function coerce
+     objects of given classes to vectors.
+
+Usage:
+
+     asVector(object)
+     
+Arguments:
+
+  object: An object.
+
+Details:
+
+     Methods for vector coercion in new classes must be created for the
+     ‘asVector’ generic instead of ‘as.vector’.</code></pre>
+<h1 id="choosing-what-to-dump-to-text">Choosing what to dump to text</h1>
+<p>You can also choose if you want just the package documentaiton, just the vignettes, or both to be combined with the <code>content</code> argument:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>docs <span class="ot">&lt;-</span> <span class="fu">rdd_to_txt</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">pkg =</span> <span class="st">&quot;utils&quot;</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">content =</span> <span class="st">&quot;vignettes&quot;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">substr</span>(docs, <span class="dv">1</span>, <span class="dv">1000</span>))  <span class="co"># Print the first 1000 characters for a preview.</span></span></code></pre></div>
+<p>As you can see below, only the vignettes were combined:</p>
+<pre><code>--------------------------------------------------------------------------------
+Vignette: Sweave.Rnw
+
+% File src/library/utils/vignettes/Sweave.Rnw
+% Part of the R package, https://www.R-project.org
+% Copyright 2002-2022 Friedrich Leisch and the R Core Team
+% Distributed under GPL 2 or later
+
+\documentclass[a4paper]{article}
+
+%\VignetteIndexEntry{Sweave User Manual}
+%\VignettePackage{utils}
+%\VignetteDepends{tools, datasets, stats, graphics}
+
+\title{Sweave User Manual}
+\author{Friedrich Leisch and R Core Team}
+
+\usepackage[round]{natbib}
+\usepackage{graphicx, Rd}
+\usepackage{listings}
+
+\lstset{frame=trbl,basicstyle=\small\tt}
+\usepackage{hyperref}
+\usepackage{color}
+\definecolor{Blue}{rgb}{0,0,0.8}
+\hypersetup{%
+colorlinks,%
+plainpages=true,%
+linkcolor=black,%
+citecolor=black,%
+urlcolor=Blue,%
+%pdfstartview=FitH,% or Fit
+pdfstartview={XYZ null null 1},%
+pdfview={XYZ null null null},%
+pdfpagemode=UseNone,% for no outline
+pdfauthor={Friedrich Leisch and R Core Team},%
+pdftitle={Sweave </code></pre>
+<h1 id="handling-temporary-files">Handling Temporary Files</h1>
+<p>The argument <code>keep_files</code> controls whether temporary files (the downloaded archive and/or extracted directory) are retained:</p>
+<ul>
+<li><p><code>&quot;none&quot;</code> (default): Delete both the tar.gz archive and the extracted files.</p></li>
+<li><p><code>&quot;tgz&quot;</code>: Keep only the tar.gz archive.</p></li>
+<li><p><code>&quot;extracted&quot;</code>: Keep only the extracted files.</p></li>
+<li><p><code>&quot;both&quot;</code>: Keep both the tar.gz archive and the extracted files.</p></li>
+</ul>
+<p>Choose the option that best fits your workflow.</p>
+
+
+
+
+
+</body></html>
