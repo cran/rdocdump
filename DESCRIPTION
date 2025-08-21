@@ -1,7 +1,7 @@
 Package: rdocdump
 Title: Dump 'R' Package Source, Documentation, and Vignettes into One
         File
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     person("Egor", "Kotov", , "kotov.egor@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-6690-5345"))
@@ -25,9 +25,9 @@ Encoding: UTF-8
 Language: en
 RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2025-06-17 15:15:54 UTC; ek
+Packaged: 2025-08-21 22:06:34 UTC; ek
 Author: Egor Kotov [aut, cre, cph] (ORCID:
     <https://orcid.org/0000-0001-6690-5345>)
 Maintainer: Egor Kotov <kotov.egor@gmail.com>
 Repository: CRAN
-Date/Publication: 2025-06-18 11:50:06 UTC
+Date/Publication: 2025-08-21 22:22:06 UTC
